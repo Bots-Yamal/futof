@@ -3,535 +3,798 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="theme-color" content="#07111c">
-<title>FUTOF — Football Experience</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#091321">
+<title>FUTOF 0.2 — Football Manager</title>
+
 <style>
 :root{
- --bg:#07111c;
- --panel:#101e2b;
- --panel2:#172838;
- --green:#35dc88;
- --text:#f3f7fa;
- --muted:#8fa2b4;
- --line:#253849;
+ --bg:#091321;--panel:#101e30;--panel2:#14263b;
+ --green:#35d59a;--green2:#19a879;--text:#f1f6fc;
+ --muted:#91a4b9;--border:#243950;--red:#ff6575;
+ --gold:#f4c95d;--blue:#55a9ff;
 }
 *{box-sizing:border-box}
 body{
  margin:0;background:var(--bg);color:var(--text);
- font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ font-family:Inter,system-ui,-apple-system,sans-serif;
  min-height:100vh;
 }
-button{font:inherit;cursor:pointer}
-.app{max-width:1200px;margin:auto;padding-bottom:90px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:1250px;margin:auto;padding:16px 16px 100px}
 header{
- height:68px;display:flex;align-items:center;justify-content:space-between;
- padding:0 20px;border-bottom:1px solid var(--line);
- background:#091521;position:sticky;top:0;z-index:10;
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;padding:12px 0 20px;position:sticky;top:0;
+ background:rgba(9,19,33,.94);backdrop-filter:blur(15px);
+ z-index:10;border-bottom:1px solid var(--border)
 }
-.logo{font-size:24px;font-weight:950;letter-spacing:-1px}
+.logo{font-weight:950;font-size:23px;letter-spacing:-1px}
 .logo span{color:var(--green)}
-.profile{display:flex;align-items:center;gap:10px}
-.avatar{
- width:37px;height:37px;border-radius:12px;background:var(--green);
- color:#07111c;display:grid;place-items:center;font-weight:900
-}
-.money{font-weight:800;color:var(--green)}
-main{padding:20px}
-.screen{display:none;animation:appear .25s ease}
+.header-right{display:flex;align-items:center;gap:10px}
+.money{background:#142d2b;color:var(--green);padding:9px 12px;border-radius:12px;font-weight:800}
+.club-mini{color:var(--muted);font-size:12px;text-align:right}
+.screen{display:none;animation:show .2s ease}
 .screen.active{display:block}
-@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.eyebrow{color:var(--green);font-size:11px;font-weight:900;letter-spacing:2px}
-h1{font-size:clamp(29px,6vw,48px);margin:8px 0}
-h2{font-size:23px;margin:0 0 15px}
-h3{margin:0 0 7px;font-size:16px}
-p{color:var(--muted);line-height:1.6}
-.hero{
- min-height:280px;border-radius:23px;padding:28px;
- display:flex;flex-direction:column;justify-content:flex-end;
- background:linear-gradient(90deg,rgba(4,13,22,.96),rgba(4,13,22,.3)),
- linear-gradient(0deg,rgba(4,13,22,.7),transparent),
- url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1200") center/cover;
- overflow:hidden;
-}
-.hero p{max-width:400px;color:#d3dce5}
-.btn{
- border:0;border-radius:12px;padding:13px 18px;font-weight:850;
- background:var(--green);color:#07111c;
-}
-.btn.secondary{background:var(--panel2);color:white;border:1px solid var(--line)}
-.btn.dark{background:#26394a;color:white}
-.btn:active{transform:scale(.97)}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.section{margin-top:28px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.card{
- background:var(--panel);border:1px solid var(--line);
- border-radius:17px;padding:17px;min-width:0;
-}
-.card p{font-size:13px;margin:6px 0}
-.big-number{font-size:27px;font-weight:900}
+@keyframes show{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+h1{font-size:27px;margin:12px 0 5px}
+h2{font-size:19px;margin:0 0 14px}
+h3{font-size:15px;margin:0 0 9px}
+p{color:var(--muted);line-height:1.5}
 .muted{color:var(--muted)}
-.tag{
- display:inline-block;background:#173b30;color:var(--green);
- border-radius:7px;padding:5px 9px;font-size:11px;font-weight:800
+.small{font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.card{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:17px;padding:16px;margin-bottom:12px
 }
-.club-card{display:flex;align-items:center;gap:13px}
-.crest{
- width:48px;height:48px;border-radius:14px;
- background:var(--panel2);display:grid;place-items:center;
- font-size:26px;flex-shrink:0
+.hero{
+ background:linear-gradient(130deg,#123a37,#10253a 65%,#14243b);
+ border:1px solid #28634f;border-radius:20px;padding:22px;margin:14px 0 18px
 }
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.list{display:grid;gap:10px}
+.hero .eyebrow{color:var(--green);font-size:11px;font-weight:900;letter-spacing:2px}
+.hero h1{font-size:30px;margin:8px 0}
+.btn{
+ border:0;border-radius:11px;padding:11px 14px;
+ background:var(--green);color:#06251c;font-weight:850;
+}
+.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+.btn.danger{background:#49242d;color:#ff9ba6}
+.btn.gold{background:#493c20;color:var(--gold)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.full{width:100%}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.stat{
+ background:var(--panel2);border-radius:13px;padding:13px;
+}
+.stat strong{font-size:21px;display:block}
+.stat span{font-size:11px;color:var(--muted)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .player{
- display:flex;align-items:center;gap:12px;
- background:var(--panel);padding:12px;border-radius:13px;
- border:1px solid var(--line)
+ display:flex;align-items:center;gap:12px;padding:12px 0;
+ border-bottom:1px solid var(--border)
 }
-.player .rating{font-size:20px;font-weight:900;color:var(--green);width:35px}
+.player:last-child{border:0}
+.avatar{
+ width:42px;height:42px;border-radius:13px;background:#203a50;
+ display:grid;place-items:center;font-weight:900;color:var(--green)
+}
 .player-info{flex:1;min-width:0}
 .player-info strong{display:block}
 .player-info small{color:var(--muted)}
-.bottom-nav{
+.rating{font-weight:950;color:var(--green);font-size:19px}
+.tag{
+ display:inline-block;background:#1b3549;color:#9fc5df;
+ padding:5px 8px;border-radius:8px;font-size:11px;font-weight:800
+}
+.tag.green{background:#143b32;color:var(--green)}
+.tag.red{background:#43252d;color:#ff9aa6}
+.tag.gold{background:#40371f;color:var(--gold)}
+.bar{height:7px;background:#26384b;border-radius:10px;overflow:hidden;margin-top:7px}
+.bar i{display:block;height:100%;background:var(--green);border-radius:10px}
+input,select{
+ width:100%;padding:12px;background:#0b1929;color:var(--text);
+ border:1px solid var(--border);border-radius:10px;margin:6px 0 12px
+}
+label{font-size:12px;color:var(--muted)}
+nav{
  position:fixed;bottom:0;left:0;right:0;z-index:20;
- background:#0b1825;border-top:1px solid var(--line);
- display:flex;justify-content:center;
- padding:9px 4px calc(9px + env(safe-area-inset-bottom));
+ display:flex;justify-content:space-around;gap:3px;
+ background:rgba(10,22,36,.97);border-top:1px solid var(--border);
+ padding:9px 3px calc(9px + env(safe-area-inset-bottom));
+ backdrop-filter:blur(15px)
 }
-.nav-inner{display:flex;width:100%;max-width:650px;justify-content:space-around}
-.nav-btn{
- color:var(--muted);background:none;border:0;
- display:flex;flex-direction:column;align-items:center;
- gap:4px;font-size:10px;min-width:55px;padding:4px
+nav button{
+ flex:1;background:none;border:0;color:var(--muted);
+ font-size:10px;padding:5px 1px;border-radius:10px
 }
-.nav-btn span{font-size:21px}
-.nav-btn.active{color:var(--green)}
-select{
- background:var(--panel2);color:white;border:1px solid var(--line);
- border-radius:10px;padding:11px;width:100%;margin:7px 0 14px
-}
-input{
- background:var(--panel2);color:white;border:1px solid var(--line);
- padding:12px;border-radius:10px;width:100%
-}
-.pitch{
- position:relative;width:100%;aspect-ratio:1.45;
- background:repeating-linear-gradient(90deg,#17643e 0 10%,#1b7047 10% 20%);
- border:3px solid #d5e8d8;border-radius:7px;overflow:hidden;
-}
-.pitch:before{
- content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px solid #d5e8d8
-}
-.pitch:after{
- content:"";position:absolute;width:23%;aspect-ratio:1;border:2px solid #d5e8d8;
- border-radius:50%;left:38.5%;top:50%;transform:translateY(-50%)
-}
-.player-dot{
- position:absolute;width:30px;height:30px;border-radius:50%;
- background:#eaf5ee;color:#092018;border:2px solid #092018;
- display:grid;place-items:center;font-size:10px;font-weight:900;
- transform:translate(-50%,-50%);z-index:2
-}
-.player-dot.enemy{background:#e34d54;color:white}
+nav button b{display:block;font-size:18px;margin-bottom:3px}
+nav button.active{color:var(--green);background:#15332f}
 .match-score{
- background:var(--panel);border:1px solid var(--line);
- border-radius:17px;padding:18px;text-align:center;margin-bottom:15px
+ text-align:center;padding:20px;background:linear-gradient(130deg,#153a35,#14283d);
+ border-radius:17px;margin-bottom:12px
 }
-.score{font-size:38px;font-weight:950;letter-spacing:4px}
-.match-log{height:110px;overflow:auto;color:var(--muted);font-size:12px;line-height:1.8}
-.shop-price{color:var(--green);font-weight:900}
-.notice{
- padding:13px;background:#142a26;border:1px solid #23523e;
- color:#b5f4d0;border-radius:12px;font-size:13px;margin-top:12px
+.match-score strong{font-size:38px;display:block;letter-spacing:3px}
+.match-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.match-actions button{padding:17px 8px;min-height:62px}
+.match-log{
+ max-height:190px;overflow:auto;font-size:12px;color:var(--muted);
+ line-height:1.8
 }
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:10px 6px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:700}
+td:first-child{font-weight:850}
+.highlight{color:var(--green);font-weight:900}
+.notice{padding:12px;border-radius:12px;background:#142c2c;color:#9ee8c9;font-size:12px;margin:10px 0}
+.empty{text-align:center;padding:25px;color:var(--muted)}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}
+hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 @media(min-width:750px){
- main{padding:30px}
+ .app{padding:20px 25px 40px}
+ nav{position:sticky;top:76px;bottom:auto;border:1px solid var(--border);border-radius:15px;margin:12px 0 20px}
  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
- .hero{min-height:350px;padding:40px}
+ .match-actions{grid-template-columns:repeat(4,1fr)}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
 <header>
- <div class="logo">FUT<span>OF</span></div>
- <div class="profile">
-  <div class="money" id="headerMoney">€ 25.000</div>
-  <div class="avatar">F</div>
+ <div class="logo">FUT<span>OF</span> <small style="font-size:10px;color:var(--muted)">0.2</small></div>
+ <div class="header-right">
+  <div class="club-mini" id="headerClub">Tu club</div>
+  <div class="money" id="headerMoney">€ 0</div>
  </div>
 </header>
 
-<main>
+<nav id="navigation">
+ <button class="active" data-screen="home"><b>⌂</b>Inicio</button>
+ <button data-screen="career"><b>🏆</b>Carrera</button>
+ <button data-screen="squad"><b>👥</b>Plantilla</button>
+ <button data-screen="match"><b>⚽</b>Partido</button>
+ <button data-screen="more"><b>☰</b>Más</button>
+</nav>
+
 <!-- INICIO -->
-<section id="home" class="screen active">
+<section class="screen active" id="home">
  <div class="hero">
-  <div class="eyebrow">YOUR FOOTBALL. YOUR LEGACY.</div>
-  <h1>EL FÚTBOL<br>ESTÁ EN TUS MANOS.</h1>
-  <p>Construye tu equipo, toma decisiones y escribe tu propia historia.</p>
+  <div class="eyebrow">TU CARRERA COMIENZA AQUÍ</div>
+  <h1 id="homeClub">Blue City FC</h1>
+  <p id="homeSubtitle">Construí tu equipo. Ganá campeonatos. Hacé historia.</p>
   <div class="actions">
-   <button class="btn" onclick="startMatch()">▶ JUGAR PARTIDO</button>
-   <button class="btn secondary" onclick="show('career')">MODO CARRERA</button>
+   <button class="btn" onclick="startMatch()">Jugar partido →</button>
+   <button class="btn secondary" onclick="go('career')">Ver carrera</button>
   </div>
  </div>
-
- <div class="section">
-  <div class="row"><h2>Tu temporada</h2><span class="tag">TEMPORADA 1</span></div>
-  <div class="grid">
-   <div class="card"><div class="muted">Club</div><div class="big-number">⚽</div><strong id="homeClub">FUTOF FC</strong></div>
-   <div class="card"><div class="muted">Victorias</div><div class="big-number" id="wins">0</div><small class="muted">Partidos ganados</small></div>
-   <div class="card"><div class="muted">Presupuesto</div><div class="big-number" id="homeMoney">25K</div><small class="muted">Euros disponibles</small></div>
-   <div class="card"><div class="muted">Jugadores</div><div class="big-number" id="playerCount">5</div><small class="muted">En plantilla</small></div>
-  </div>
+ <div class="grid">
+  <div class="stat"><strong id="homePosition">-</strong><span>Posición en liga</span></div>
+  <div class="stat"><strong id="homePoints">0</strong><span>Puntos</span></div>
+  <div class="stat"><strong id="homeWins">0</strong><span>Victorias</span></div>
+  <div class="stat"><strong id="homeMatches">0</strong><span>Partidos jugados</span></div>
  </div>
-
- <div class="section">
-  <h2>Accesos rápidos</h2>
-  <div class="grid">
-   <button class="card" onclick="show('squad')" style="color:white;text-align:left">👥<h3>Plantilla</h3><p>Gestiona tus jugadores</p></button>
-   <button class="card" onclick="show('tactics')" style="color:white;text-align:left">📋<h3>Tácticas</h3><p>Prepara tu formación</p></button>
-   <button class="card" onclick="show('market')" style="color:white;text-align:left">💰<h3>Fichajes</h3><p>Refuerza el equipo</p></button>
-   <button class="card" onclick="show('teams')" style="color:white;text-align:left">🏆<h3>Clubes</h3><p>Conoce otros equipos</p></button>
-  </div>
- </div>
+ <div class="section-title"><h2>Próximo encuentro</h2><span class="tag green">Calendario</span></div>
+ <div class="card" id="nextMatch"></div>
+ <div class="section-title"><h2>Noticias del club</h2></div>
+ <div class="card" id="news"></div>
 </section>
 
 <!-- CARRERA -->
-<section id="career" class="screen">
- <div class="eyebrow">CAREER MODE</div>
+<section class="screen" id="career">
  <h1>Modo carrera</h1>
- <p>Tu camino hacia la gloria comienza aquí.</p>
+ <p>Gestioná tu club y competí en diferentes torneos.</p>
  <div class="card">
-  <div class="eyebrow">TU CLUB</div>
-  <h2 id="careerClub">FUTOF FC</h2>
-  <p>Temporada 2026/27 · Liga de prueba</p>
-  <div class="grid">
-   <div><div class="muted">Victorias</div><div class="big-number" id="careerWins">0</div></div>
-   <div><div class="muted">Jugados</div><div class="big-number" id="played">0</div></div>
-   <div><div class="muted">Presupuesto</div><div class="big-number" id="careerMoney">25K</div></div>
-   <div><div class="muted">Reputación</div><div class="big-number">⭐ 1</div></div>
+  <h2>Tu club</h2>
+  <div class="row"><strong id="careerClub">Blue City FC</strong><span class="tag green">Activo</span></div>
+  <p id="careerLeague">Liga FUTOF</p>
+  <div class="grid3">
+   <div class="stat"><strong id="careerPlayed">0</strong><span>Jugados</span></div>
+   <div class="stat"><strong id="careerWon">0</strong><span>Ganados</span></div>
+   <div class="stat"><strong id="careerLost">0</strong><span>Perdidos</span></div>
   </div>
  </div>
- <div class="section">
-  <h2>Próximo encuentro</h2>
-  <div class="card row">
-   <div style="text-align:center;flex:1"><div class="crest" style="margin:auto">⚽</div><strong>FUTOF FC</strong></div>
-   <div><strong>VS</strong><p>Jornada 1</p></div>
-   <div style="text-align:center;flex:1"><div class="crest" style="margin:auto">🔵</div><strong>Blue City</strong></div>
-  </div>
-  <button class="btn" style="width:100%;margin-top:13px" onclick="startMatch()">JUGAR ENCUENTRO</button>
+ <div class="card">
+  <h2>Competiciones</h2>
+  <div id="competitions"></div>
  </div>
- <div class="section">
-  <h2>Objetivos del entrenador</h2>
-  <div class="card">
-   <p>🎯 Gana tu primer partido.</p>
-   <p>🎯 Consigue un nuevo fichaje.</p>
-   <p>🎯 Construye una plantilla competitiva.</p>
-  </div>
+ <div class="card">
+  <h2>Tabla de posiciones</h2>
+  <div style="overflow-x:auto"><table id="leagueTable"></table></div>
+ </div>
+ <div class="card">
+  <h2>Calendario de liga</h2>
+  <div id="calendar"></div>
  </div>
 </section>
 
 <!-- PLANTILLA -->
-<section id="squad" class="screen">
- <div class="eyebrow">TEAM MANAGEMENT</div>
- <h1>Mi plantilla</h1>
- <p>Conoce y administra a tus futbolistas.</p>
- <div class="row"><h2>Jugadores</h2><span class="tag" id="squadCount">5 jugadores</span></div>
- <div class="list" id="playersList"></div>
-</section>
-
-<!-- TACTICAS -->
-<section id="tactics" class="screen">
- <div class="eyebrow">TACTICAL BOARD</div>
- <h1>Tácticas</h1>
- <p>Elige cómo jugará tu equipo.</p>
- <div class="card">
-  <label>Formación</label>
-  <select id="formation" onchange="setFormation(this.value)">
-   <option>4-3-3</option><option>4-4-2</option><option>4-2-3-1</option>
-   <option>3-5-2</option><option>5-3-2</option>
-  </select>
-  <label>Estilo de juego</label>
-  <select id="style">
-   <option>Equilibrado</option><option>Posesión</option>
-   <option>Presión alta</option><option>Contraataque</option>
-  </select>
-  <label>Actitud</label>
-  <select id="mentality">
-   <option>Normal</option><option>Ofensiva</option><option>Defensiva</option>
-  </select>
-  <div class="notice">Las tácticas se guardan automáticamente en esta sesión.</div>
+<section class="screen" id="squad">
+ <h1>Plantilla</h1>
+ <p>Administrá a tus jugadores y su estado físico.</p>
+ <div class="grid">
+  <div class="stat"><strong id="squadCount">0</strong><span>Jugadores</span></div>
+  <div class="stat"><strong id="squadAverage">0</strong><span>Media del equipo</span></div>
  </div>
- <div class="section">
-  <h2>Formación visual</h2>
-  <div class="pitch" id="tacticalPitch"></div>
- </div>
-</section>
-
-<!-- MERCADO -->
-<section id="market" class="screen">
- <div class="eyebrow">TRANSFER MARKET</div>
- <h1>Mercado de fichajes</h1>
- <p>Encuentra nuevos talentos para tu club.</p>
- <div class="card row">
-  <div><small class="muted">PRESUPUESTO DISPONIBLE</small><h2 id="marketMoney">€ 25.000</h2></div>
-  <span>💰</span>
- </div>
- <div class="section"><h2>Jugadores disponibles</h2><div class="list" id="marketList"></div></div>
- <div class="notice">Mercado de demostración: jugadores ficticios y monedas virtuales.</div>
-</section>
-
-<!-- EQUIPOS -->
-<section id="teams" class="screen">
- <div class="eyebrow">CLUB DIRECTORY</div>
- <h1>Clubes</h1>
- <p>Explora equipos de fútbol.</p>
- <div class="list" id="teamsList"></div>
- <div class="notice">Los clubes mostrados son ejemplos. No incluye licencias oficiales.</div>
+ <div class="section-title"><h2>Jugadores</h2></div>
+ <div class="card" id="playersList"></div>
 </section>
 
 <!-- PARTIDO -->
-<section id="match" class="screen">
- <div class="eyebrow">MATCH DAY</div>
- <h1>El partido</h1>
+<section class="screen" id="match">
+ <h1>Centro de partido</h1>
+ <p>Partidos por turnos: cada acción hace avanzar el encuentro.</p>
  <div class="match-score">
-  <div class="muted" id="matchMinute">MINUTO 0</div>
-  <div class="row" style="justify-content:center;margin:12px 0">
-   <strong>FUTOF FC</strong><span style="margin:0 15px">⚽</span><strong>BLUE CITY</strong>
+  <div class="small" id="matchCompetition">PARTIDO DE LIGA</div>
+  <div class="row" style="justify-content:center;gap:25px;margin:15px 0">
+   <div><div id="matchHomeName">Blue City</div></div>
+   <div><strong id="score">0 - 0</strong></div>
+   <div><div id="matchAwayName">Rival</div></div>
   </div>
-  <div class="score"><span id="scoreHome">0</span> - <span id="scoreAway">0</span></div>
-  <div class="muted" id="matchStatus">PARTIDO PREPARADO</div>
+  <div class="tag green" id="matchMinute">00'</div>
+  <p id="matchStatus">Preparado para jugar</p>
  </div>
- <div class="pitch" id="matchPitch">
-  <div class="player-dot" style="left:16%;top:50%">POR</div>
-  <div class="player-dot" style="left:32%;top:25%">DEF</div>
-  <div class="player-dot" style="left:32%;top:75%">DEF</div>
-  <div class="player-dot" style="left:48%;top:40%">MED</div>
-  <div class="player-dot" style="left:48%;top:60%">MED</div>
-  <div class="player-dot" style="left:70%;top:50%">DEL</div>
-  <div class="player-dot enemy" style="left:83%;top:50%">POR</div>
-  <div class="player-dot enemy" style="left:68%;top:25%">DEF</div>
-  <div class="player-dot enemy" style="left:68%;top:75%">DEF</div>
-  <div class="player-dot enemy" style="left:52%;top:35%">MED</div>
-  <div class="player-dot enemy" style="left:52%;top:65%">MED</div>
-  <div class="player-dot enemy" style="left:32%;top:50%">DEL</div>
+ <div class="grid">
+  <div class="stat"><strong id="energyValue">100%</strong><span>Energía del equipo</span><div class="bar"><i id="energyBar" style="width:100%"></i></div></div>
+  <div class="stat"><strong id="difficultyValue">Normal</strong><span>Dificultad</span></div>
  </div>
- <div class="section card">
-  <div class="row"><h3>Acciones del partido</h3><span class="tag">EN JUEGO</span></div>
-  <p>Selecciona tu siguiente movimiento.</p>
-  <div class="grid">
-   <button class="btn" onclick="playAction('Pase')">⚽ Pase</button>
-   <button class="btn" onclick="playAction('Disparo')">🥅 Disparar</button>
-   <button class="btn secondary" onclick="playAction('Regate')">🏃 Regate</button>
-   <button class="btn secondary" onclick="playAction('Defender')">🛡️ Defender</button>
-  </div>
-  <div class="section">
-   <h3>Relato del partido</h3>
-   <div class="match-log" id="matchLog">El árbitro está preparado. ¡Que comience el encuentro!</div>
-  </div>
-  <button class="btn secondary" style="width:100%;margin-top:15px" onclick="finishMatch()">Finalizar partido</button>
- </div>
-</section>
-
-<!-- AJUSTES -->
-<section id="settings" class="screen">
- <div class="eyebrow">SETTINGS</div>
- <h1>Ajustes</h1>
  <div class="card">
-  <h3>Nombre de tu club</h3>
-  <input id="clubName" maxlength="22" value="FUTOF FC">
-  <button class="btn" style="margin-top:12px;width:100%" onclick="saveClub()">Guardar nombre</button>
+  <h2>Acciones</h2>
+  <div class="match-actions">
+   <button class="btn secondary" data-action="pass">↗️ Pase</button>
+   <button class="btn secondary" data-action="dribble">⚡ Regate</button>
+   <button class="btn" data-action="shoot">🥅 Disparar</button>
+   <button class="btn secondary" data-action="defend">🛡️ Defender</button>
+  </div>
+  <div class="notice" id="matchHint">Cada acción consume tiempo y energía. ¡Elegí bien!</div>
+  <div class="actions">
+   <button class="btn secondary" onclick="go('squad')">Ver plantilla</button>
+   <button class="btn danger" onclick="confirmFinish()">Abandonar partido</button>
+  </div>
  </div>
- <div class="section card">
-  <h3>Información</h3>
-  <p>FUTOF 0.1</p>
-  <p>Versión de desarrollo.</p>
-  <p>Juego de fútbol experimental.</p>
- </div>
- <div class="section card">
-  <h3>Datos de juego</h3>
-  <button class="btn secondary" style="width:100%" onclick="resetGame()">Reiniciar progreso</button>
+ <div class="card">
+  <h2>Relato del encuentro</h2>
+  <div class="match-log" id="matchLog">Todavía no comenzó el partido.</div>
  </div>
 </section>
-</main>
 
-<nav class="bottom-nav">
- <div class="nav-inner">
-  <button class="nav-btn active" onclick="show('home',this)"><span>⌂</span>Inicio</button>
-  <button class="nav-btn" onclick="show('career',this)"><span>🏆</span>Carrera</button>
-  <button class="nav-btn" onclick="show('squad',this)"><span>👥</span>Plantilla</button>
-  <button class="nav-btn" onclick="show('market',this)"><span>💰</span>Mercado</button>
-  <button class="nav-btn" onclick="show('settings',this)"><span>⚙️</span>Ajustes</button>
+<!-- MÁS -->
+<section class="screen" id="more">
+ <h1>Centro de gestión</h1>
+ <p>Todo lo que necesitás para dirigir tu club.</p>
+ <div class="grid">
+  <button class="card" onclick="go('training')">🏋️<h3>Entrenamientos</h3><span class="small muted">Mejorá tu plantilla</span></button>
+  <button class="card" onclick="go('contracts')">📝<h3>Contratos</h3><span class="small muted">Renovaciones</span></button>
+  <button class="card" onclick="go('loans')">🔄<h3>Cesiones</h3><span class="small muted">Préstamos de jugadores</span></button>
+  <button class="card" onclick="go('press')">🎙️<h3>Prensa</h3><span class="small muted">Ruedas de prensa</span></button>
+  <button class="card" onclick="go('youth')">🌱<h3>Academia juvenil</h3><span class="small muted">Formá promesas</span></button>
+  <button class="card" onclick="go('stats')">📊<h3>Estadísticas</h3><span class="small muted">Rendimiento individual</span></button>
+  <button class="card" onclick="go('awards')">🥇<h3>Premios</h3><span class="small muted">Balón de Oro</span></button>
+  <button class="card" onclick="go('clubs')">🏟️<h3>Clubes</h3><span class="small muted">Otros equipos</span></button>
+  <button class="card" onclick="go('settings')">⚙️<h3>Configuración</h3><span class="small muted">Dificultad y partida</span></button>
  </div>
-</nav>
+</section>
+
+<!-- ENTRENAMIENTO -->
+<section class="screen" id="training">
+ <h1>Entrenamientos</h1>
+ <p>Elegí una sesión para mejorar atributos. El entrenamiento puede aumentar el cansancio.</p>
+ <div class="card">
+  <h2>Sesiones disponibles</h2>
+  <div class="player"><div class="avatar">⚽</div><div class="player-info"><strong>Técnica</strong><small>Mejora el control y el pase</small></div><button class="btn" onclick="train('technique')">Entrenar</button></div>
+  <div class="player"><div class="avatar">🏃</div><div class="player-info"><strong>Físico</strong><small>Mejora la resistencia</small></div><button class="btn" onclick="train('physical')">Entrenar</button></div>
+  <div class="player"><div class="avatar">🎯</div><div class="player-info"><strong>Definición</strong><small>Mejora el disparo</small></div><button class="btn" onclick="train('shooting')">Entrenar</button></div>
+  <div class="player"><div class="avatar">🛡️</div><div class="player-info"><strong>Defensa</strong><small>Mejora la defensa</small></div><button class="btn" onclick="train('defense')">Entrenar</button></div>
+  <div class="notice">Los entrenamientos se pueden realizar una vez por jornada. Los jugadores lesionados no entrenan.</div>
+ </div>
+</section>
+
+<!-- CONTRATOS -->
+<section class="screen" id="contracts">
+ <h1>Contratos</h1>
+ <p>Renová a tus jugadores antes de que termine su contrato.</p>
+ <div class="card" id="contractsList"></div>
+</section>
+
+<!-- CESIONES -->
+<section class="screen" id="loans">
+ <h1>Cesiones</h1>
+ <p>Mandá jugadores jóvenes a otros equipos para que ganen experiencia.</p>
+ <div class="card">
+  <h2>Jugadores disponibles</h2>
+  <div id="loanList"></div>
+ </div>
+ <div class="card">
+  <h2>Jugadores cedidos</h2>
+  <div id="loanedList"></div>
+ </div>
+</section>
+
+<!-- PRENSA -->
+<section class="screen" id="press">
+ <h1>Rueda de prensa</h1>
+ <p>Respondé a los periodistas y manejá la reputación del club.</p>
+ <div class="card">
+  <span class="tag">CONFERENCIA</span>
+  <h2 id="pressQuestion">¿Qué esperás del próximo partido?</h2>
+  <div id="pressAnswers"></div>
+  <div class="notice" id="pressResult">Tu relación con la prensa: Neutral</div>
+ </div>
+</section>
+
+<!-- ACADEMIA -->
+<section class="screen" id="youth">
+ <h1>Academia juvenil</h1>
+ <p>Descubrí talentos y preparalos para el primer equipo.</p>
+ <div class="card">
+  <h2>Buscar promesas</h2>
+  <p>Invertí en ojeadores para descubrir jóvenes jugadores.</p>
+  <button class="btn full" onclick="scoutYouth()">Buscar jugador — € 2.000</button>
+ </div>
+ <div class="card">
+  <h2>Jóvenes descubiertos</h2>
+  <div id="youthList"></div>
+ </div>
+</section>
+
+<!-- ESTADÍSTICAS -->
+<section class="screen" id="stats">
+ <h1>Estadísticas individuales</h1>
+ <p>Consultá el rendimiento de cada futbolista.</p>
+ <div class="card">
+  <div style="overflow-x:auto"><table id="individualStats"></table></div>
+ </div>
+</section>
+
+<!-- PREMIOS -->
+<section class="screen" id="awards">
+ <h1>Premios FUTOF</h1>
+ <div class="hero">
+  <div class="eyebrow">PREMIO PRINCIPAL</div>
+  <h1>🏆 Balón de Oro</h1>
+  <p>El reconocimiento al mejor futbolista de la temporada.</p>
+  <button class="btn gold" onclick="showBallon()">Ver candidatos</button>
+ </div>
+ <div class="card" id="ballonResult"></div>
+ <div class="card">
+  <h2>Otros reconocimientos</h2>
+  <div id="otherAwards"></div>
+ </div>
+</section>
+
+<!-- CLUBES -->
+<section class="screen" id="clubs">
+ <h1>Clubes</h1>
+ <p>Equipos disponibles en el universo FUTOF.</p>
+ <div class="card" id="clubsList"></div>
+</section>
+
+<!-- CONFIGURACIÓN -->
+<section class="screen" id="settings">
+ <h1>Configuración</h1>
+ <div class="card">
+  <h2>Dificultad</h2>
+  <select id="difficultySelect" onchange="setDifficulty(this.value)">
+   <option value="easy">Fácil</option>
+   <option value="normal">Normal</option>
+   <option value="hard">Difícil</option>
+   <option value="pro">Profesional</option>
+  </select>
+  <p class="small">La dificultad modifica la precisión de tus acciones y el comportamiento del rival.</p>
+ </div>
+ <div class="card">
+  <h2>Partida</h2>
+  <p>Los datos se guardan en el almacenamiento local de este dispositivo.</p>
+  <button class="btn secondary full" onclick="exportSave()">Exportar partida</button>
+  <button class="btn danger full" style="margin-top:9px" onclick="resetGame()">Reiniciar FUTOF</button>
+ </div>
+</section>
 </div>
 
 <script>
-const initialPlayers=[
- {name:"Alex Morgan",pos:"POR",rating:76,value:0},
- {name:"Leo Silva",pos:"DEF",rating:75,value:0},
- {name:"Marco Díaz",pos:"MED",rating:78,value:0},
- {name:"Daniel Costa",pos:"DEL",rating:80,value:0},
- {name:"Lucas Vega",pos:"MED",rating:74,value:0}
+const CLUBS=[
+ "Blue City FC","Red Madrid","Black Turin","Golden Paris",
+ "London United","Manchester Blue","Munich Stars","Milano FC",
+ "Lisbon Green","Royal London","Barcelona Stars","Dortmund Black",
+ "Sevilla Rojo","Napoli Azul","Amsterdam FC","Porto Dragons",
+ "Valencia Orange","Liverpool Red","Bayern North","Roma Imperial"
 ];
-const available=[
- {name:"Noah Williams",pos:"DEL",rating:82,price:12000},
- {name:"Mateo Rossi",pos:"MED",rating:79,price:9000},
- {name:"Ethan Brown",pos:"DEF",rating:77,price:7000},
- {name:"Gabriel Santos",pos:"POR",rating:81,price:11000},
- {name:"Hugo Martín",pos:"DEL",rating:85,price:18000},
- {name:"Oliver Smith",pos:"MED",rating:76,price:6500}
+const LEAGUES=[
+ {name:"Premier FUTOF",teams:["London United","Manchester Blue","Royal London","Liverpool Red","Blue City FC","Dortmund Black","Amsterdam FC","Porto Dragons","Lisbon Green","Sevilla Rojo"]},
+ {name:"Liga FUTOF",teams:["Red Madrid","Barcelona Stars","Valencia Orange","Sevilla Rojo","Blue City FC","Royal London","Napoli Azul","Lisbon Green","Milano FC","Dortmund Black"]},
+ {name:"Serie FUTOF",teams:["Black Turin","Milano FC","Napoli Azul","Roma Imperial","Golden Paris","Munich Stars","Porto Dragons","Amsterdam FC","Liverpool Red","Manchester Blue"]},
+ {name:"Bundes FUTOF",teams:["Munich Stars","Dortmund Black","Amsterdam FC","Liverpool Red","Manchester Blue","Black Turin","Blue City FC","Royal London","Porto Dragons","Golden Paris"]},
+ {name:"Ligue FUTOF",teams:["Golden Paris","Lisbon Green","Porto Dragons","Red Madrid","Barcelona Stars","Roma Imperial","Valencia Orange","Napoli Azul","London United","Munich Stars"]}
 ];
-let state={
- money:25000,wins:0,played:0,club:"FUTOF FC",
- players:initialPlayers.map(p=>({...p})),
- formation:"4-3-3",scoreH:0,scoreA:0,minute:0,activeMatch:false,
- matchFinished:false
-};
-let opponent="Blue City";
+const DIFFICULTY={easy:.76,normal:.61,hard:.47,pro:.34};
+const $=id=>document.getElementById(id);
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-function show(id,btn){
- document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
- if(btn)btn.classList.add("active");
- else document.querySelectorAll(".nav-btn").forEach(b=>{
-  if(b.getAttribute("onclick")?.includes("'"+id+"'"))b.classList.add("active");
- });
- window.scrollTo(0,0);
- render();
+function newPlayer(name,pos,rating){
+ return {id:crypto.randomUUID(),name,pos,rating,energy:100,injury:0,
+  contract:2,goals:0,assists:0,appearances:0,shots:0,passes:0,
+  tackles:0,yellow:0,training:0,loan:false};
 }
-function money(n){return "€ "+n.toLocaleString("es-ES")}
-function shortMoney(n){return (n/1000).toFixed(1).replace(".0","")+"K"}
-function update(){
- document.getElementById("headerMoney").textContent=money(state.money);
- document.getElementById("homeMoney").textContent=shortMoney(state.money);
- document.getElementById("careerMoney").textContent=shortMoney(state.money);
- document.getElementById("marketMoney").textContent=money(state.money);
- document.getElementById("wins").textContent=state.wins;
- document.getElementById("careerWins").textContent=state.wins;
- document.getElementById("played").textContent=state.played;
- document.getElementById("playerCount").textContent=state.players.length;
- document.getElementById("squadCount").textContent=state.players.length+" jugadores";
- document.getElementById("homeClub").textContent=state.club;
- document.getElementById("careerClub").textContent=state.club;
- document.getElementById("clubName").value=state.club;
+function makeSquad(){
+ const names=[
+ ["Leo Martin","DEL",84],["Alex Costa","DEL",81],["Nico Silva","MED",83],
+ ["Mateo Ruiz","MED",80],["Luca Torres","MED",78],["David Cruz","DEF",82],
+ ["Marco Vega","DEF",79],["Enzo Romero","DEF",77],["Pablo Diaz","DEF",76],
+ ["Santi López","POR",82],["Tomás Rivas","POR",74]
+ ];
+ return names.map(x=>newPlayer(...x));
 }
-function renderPlayers(){
- document.getElementById("playersList").innerHTML=state.players.map(p=>`
- <div class="player">
-  <div class="rating">${p.rating}</div>
-  <div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>${p.pos} · FUTOF FC</small></div>
-  <span class="tag">ACTIVO</span>
- </div>`).join("");
-}
-function renderMarket(){
- document.getElementById("marketList").innerHTML=available.map((p,i)=>`
- <div class="player">
-  <div class="rating">${p.rating}</div>
-  <div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>${p.pos} · ${money(p.price)}</small></div>
-  <button class="btn" onclick="buyPlayer(${i})">Fichar</button>
- </div>`).join("");
-}
-function renderTeams(){
- let clubs=[["🔵","Blue City","Inglaterra"],["🔴","Red Madrid","España"],["⚫","Black Turin","Italia"],["🟡","Golden Paris","Francia"],["🟢","Green Munich","Alemania"]];
- document.getElementById("teamsList").innerHTML=clubs.map(c=>`
- <div class="card club-card"><div class="crest">${c[0]}</div><div><strong>${c[1]}</strong><p>${c[2]} · Club de demostración</p></div></div>`).join("");
-}
-function renderPitch(){
- let positions={
- "4-3-3":[[15,50],[32,18],[32,39],[32,61],[32,82],[52,25],[52,50],[52,75],[76,20],[76,50],[76,80]],
- "4-4-2":[[15,50],[32,18],[32,39],[32,61],[32,82],[53,15],[53,38],[53,62],[53,85],[76,38],[76,62]],
- "4-2-3-1":[[15,50],[32,18],[32,39],[32,61],[32,82],[48,35],[48,65],[68,20],[68,50],[68,80],[84,50]],
- "3-5-2":[[15,50],[32,25],[32,50],[32,75],[53,12],[53,31],[53,50],[53,69],[53,88],[78,35],[78,65]],
- "5-3-2":[[15,50],[30,12],[30,31],[30,50],[30,69],[30,88],[53,25],[53,50],[53,75],[78,35],[78,65]]
+function createState(){
+ return {
+  club:"Blue City FC",league:"Premier FUTOF",money:50000,
+  difficulty:"normal",players:makeSquad(),youth:[],loaned:[],
+  played:0,wins:0,draws:0,losses:0,points:0,goalsFor:0,goalsAgainst:0,
+  reputation:50,pressMood:"Neutral",round:0,trainingRound:-1,
+  match:null,news:["¡Comienza una nueva temporada!"],
+  competitions:["Liga FUTOF","Copa FUTOF","Champions FUTOF","Supercopa FUTOF"],
+  cupRound:0,awards:[],season:1,ballonWinner:null
  };
- document.getElementById("tacticalPitch").innerHTML=positions[state.formation].map((p,i)=>
- `<div class="player-dot" style="left:${p[0]}%;top:${p[1]}%">${i===0?"POR":i<5?"DEF":i<9?"MED":"DEL"}</div>`
- ).join("");
 }
-function setFormation(v){state.formation=v;renderPitch()}
-function buyPlayer(i){
- let p=available[i];
- if(state.players.some(x=>x.name===p.name)){alert("Ya tienes a este jugador.");return}
- if(state.money<p.price){alert("No tienes suficiente presupuesto.");return}
- state.money-=p.price;
- state.players.push({...p});
- available.splice(i,1);
- render();alert("¡Fichaje completado: "+p.name+"!");
+let state;
+try{state=JSON.parse(localStorage.getItem("FUTOF02"))||createState()}catch(e){state=createState()}
+function save(){
+ try{localStorage.setItem("FUTOF02",JSON.stringify(state))}catch(e){}
+ updateHeader();
 }
-function startMatch(){
- state.scoreH=0;state.scoreA=0;state.minute=0;
- state.activeMatch=true;state.matchFinished=false;
- document.getElementById("scoreHome").textContent=0;
- document.getElementById("scoreAway").textContent=0;
- document.getElementById("matchMinute").textContent="MINUTO 0";
- document.getElementById("matchStatus").textContent="EN JUEGO";
- document.getElementById("matchLog").innerHTML="¡Comienza el partido! FUTOF FC mueve el balón.";
- show("match");
+function updateHeader(){
+ $("headerClub").textContent=state.club;
+ $("headerMoney").textContent="€ "+state.money.toLocaleString("es-ES");
 }
-function log(text){
- let el=document.getElementById("matchLog");
- el.innerHTML+=`<br>Min ${state.minute}: ${text}`;
- el.scrollTop=el.scrollHeight;
+function go(screen){
+ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+ const target=$(screen);if(target)target.classList.add("active");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===screen||(screen!=="home"&&screen!=="career"&&screen!=="squad"&&screen!=="match"&&screen!=="more"&&b.dataset.screen==="more")));
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
 }
-function playAction(action){
- if(!state.activeMatch||state.matchFinished){alert("No hay partido activo.");return}
- state.minute=Math.min(90,state.minute+Math.floor(Math.random()*9)+3);
- let roll=Math.random();
- if(action==="Disparo"){
-  if(roll>.57){state.scoreH++;log("¡GOOOOOOL de FUTOF FC!");}
-  else log("El disparo no encuentra portería.");
- }else if(action==="Pase"){
-  log(roll>.2?"Buen pase. Tu equipo conserva la posesión.":"Pase interceptado por el rival.");
- }else if(action==="Regate"){
-  log(roll>.4?"¡Regate exitoso! Avanzas hacia el área.":"El defensor consigue quitarte el balón.");
- }else{
-  if(roll>.3){log("Buena defensa. Recuperas la posesión.");}
-  else{state.scoreA++;log("El rival aprovecha el espacio y marca.");}
- }
- if(state.minute>=90){
-  finishMatch();return;
- }
- document.getElementById("scoreHome").textContent=state.scoreH;
- document.getElementById("scoreAway").textContent=state.scoreA;
- document.getElementById("matchMinute").textContent="MINUTO "+state.minute;
+$("navigation").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-screen]");if(b)go(b.dataset.screen);
+});
+function addNews(message){
+ state.news.unshift(message);state.news=state.news.slice(0,8);
 }
-function finishMatch(){
- if(!state.activeMatch||state.matchFinished)return;
- state.matchFinished=true;state.activeMatch=false;
- state.played++;
- if(state.scoreH>state.scoreA){state.wins++;state.money+=3000}
- else if(state.scoreH===state.scoreA){state.money+=1000}
- else{state.money+=500}
- document.getElementById("matchStatus").textContent="PARTIDO FINALIZADO";
- log("Final del partido. Resultado: "+state.scoreH+" - "+state.scoreA);
- update();
- alert("Partido terminado: "+state.scoreH+" - "+state.scoreA+". Premio añadido al presupuesto.");
+function getLeague(){
+ return LEAGUES.find(l=>l.name===state.league)||LEAGUES[0];
 }
-function saveClub(){
- let v=document.getElementById("clubName").value.trim();
- if(!v){alert("Escribe un nombre.");return}
- state.club=v;update();alert("Nombre del club actualizado.");
+function clubStats(){
+ const teams=getLeague().teams;
+ return teams.map(name=>{
+  const p=name===state.club?state:{played:0,wins:0,draws:0,losses:0,points:0,goalsFor:0,goalsAgainst:0};
+  return {name,played:p.played||0,wins:p.wins||0,draws:p.draws||0,
+   losses:p.losses||0,points:p.points||0,gf:p.goalsFor||0,ga:p.goalsAgainst||0};
+ }).sort((a,b)=>b.points-a.points||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
 }
-function escapeHTML(str){
- return String(str).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function nextOpponent(){
+ const teams=getLeague().teams.filter(t=>t!==state.club);
+ return teams[state.round%teams.length];
 }
-function resetGame(){
- if(!confirm("¿Seguro que quieres reiniciar todo tu progreso?"))return;
- state={money:25000,wins:0,played:0,club:"FUTOF FC",
- players:initialPlayers.map(p=>({...p})),formation:"4-3-3",
- scoreH:0,scoreA:0,minute:0,activeMatch:false,matchFinished:false};
- location.reload();
+function renderHome(){
+ $("homeClub").textContent=state.club;
+ $("homeSubtitle").textContent="Temporada "+state.season+" · "+state.league;
+ const table=clubStats(),pos=table.findIndex(t=>t.name===state.club)+1;
+ $("homePosition").textContent=pos+"º";
+ $("homePoints").textContent=state.points;
+ $("homeWins").textContent=state.wins;
+ $("homeMatches").textContent=state.played;
+ $("nextMatch").innerHTML=`<div class="row"><strong>${escapeHTML(state.club)}</strong><span class="tag">VS</span><strong>${escapeHTML(nextOpponent())}</strong></div><p>Jornada ${state.round+1} · ${state.league}</p><button class="btn full" onclick="startMatch()">Jugar encuentro</button>`;
+ $("news").innerHTML=state.news.map(n=>`<p>• ${escapeHTML(n)}</p>`).join("");
+}
+function renderCareer(){
+ $("careerClub").textContent=state.club;$("careerLeague").textContent=state.league;
+ $("careerPlayed").textContent=state.played;$("careerWon").textContent=state.wins;$("careerLost").textContent=state.losses;
+ $("competitions").innerHTML=state.competitions.map((c,i)=>`<div class="player"><div class="avatar">${["🏆","🥇","🌍","⭐"][i%4]}</div><div class="player-info"><strong>${escapeHTML(c)}</strong><small>${i===0?"Competición de liga":"Torneo de eliminación"}</small></div><span class="tag">${i===0?"Activa":"Disponible"}</span></div>`).join("");
+ const rows=clubStats();
+ $("leagueTable").innerHTML="<tr><th>#</th><th>Club</th><th>PJ</th><th>DG</th><th>PTS</th></tr>"+rows.map((t,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(t.name)}</td><td>${t.played}</td><td>${t.gf-t.ga}</td><td class="${t.name===state.club?"highlight":""}">${t.points}</td></tr>`).join("");
+ $("calendar").innerHTML=`<p>Jornada actual: ${state.round+1}</p><p>Próximo rival: <strong>${escapeHTML(nextOpponent())}</strong></p><button class="btn secondary" onclick="simulateRound()">Simular otros partidos</button>`;
+}
+function playerCard(p){
+ return `<div class="player"><div class="avatar">${p.pos}</div><div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>Media ${p.rating} · Energía ${p.energy}% · Contrato ${p.contract} temp.</small><div class="bar"><i style="width:${p.energy}%;background:${p.energy<30?"var(--red)":"var(--green)"}"></i></div>${p.injury>0?'<span class="tag red">Lesionado</span>':""}${p.loan?'<span class="tag">Cedido</span>':""}</div><div class="rating">${p.rating}</div></div>`;
+}
+function renderSquad(){
+ const active=state.players.filter(p=>!p.loan);
+ $("squadCount").textContent=active.length;
+ $("squadAverage").textContent=active.length?Math.round(active.reduce((a,p)=>a+p.rating,0)/active.length):0;
+ $("playersList").innerHTML=state.players.map(playerCard).join("");
+}
+function renderContracts(){
+ $("contractsList").innerHTML=state.players.filter(p=>!p.loan).map(p=>`<div class="player"><div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>Contrato: ${p.contract} temporada(s)</small></div><button class="btn secondary" onclick="renewContract('${p.id}')">Renovar</button></div>`).join("");
+}
+function renderLoans(){
+ $("loanList").innerHTML=state.players.filter(p=>!p.loan&&p.pos!=="POR").map(p=>`<div class="player"><div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>Media ${p.rating}</small></div><button class="btn secondary" onclick="loanPlayer('${p.id}')">Ceder</button></div>`).join("")||'<p class="empty">No hay jugadores disponibles.</p>';
+ $("loanedList").innerHTML=state.loaned.map(p=>`<div class="player"><div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>Vuelve al finalizar la temporada</small></div><button class="btn secondary" onclick="recallPlayer('${p.id}')">Recuperar</button></div>`).join("")||'<p class="empty">No hay jugadores cedidos.</p>';
+}
+const pressQuestions=[
+ {q:"¿Qué esperás del próximo partido?",a:[["Vamos a buscar la victoria",5],["Será un partido complicado",2],["No quiero adelantar nada",0]]},
+ {q:"¿Cómo valorás el rendimiento del equipo?",a:[["Estoy orgulloso del equipo",5],["Tenemos mucho que mejorar",3],["No estoy conforme",-3]]},
+ {q:"¿Qué opinás del mercado de fichajes?",a:[["Tenemos un gran proyecto",4],["Estamos buscando refuerzos",2],["No hablaré de eso",-1]]}
+];
+let pressIndex=0;
+function renderPress(){
+ const q=pressQuestions[pressIndex%pressQuestions.length];
+ $("pressQuestion").textContent=q.q;
+ $("pressAnswers").innerHTML=q.a.map((a,i)=>`<button class="btn secondary full" style="margin:5px 0" onclick="answerPress(${i})">${a[0]}</button>`).join("");
+ $("pressResult").textContent="Reputación: "+state.reputation+" · "+state.pressMood;
+}
+function renderYouth(){
+ $("youthList").innerHTML=state.youth.map(p=>`<div class="player"><div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>${p.pos} · Edad ${p.age} · Potencial ${p.potential}</small></div><span class="rating">${p.rating}</span><button class="btn secondary" onclick="promoteYouth('${p.id}')">Subir</button></div>`).join("")||'<p class="empty">Todavía no descubriste jóvenes.</p>';
+}
+function renderStats(){
+ $("individualStats").innerHTML="<tr><th>Jugador</th><th>G</th><th>A</th><th>P</th><th>DEF</th><th>Part.</th></tr>"+state.players.map(p=>`<tr><td>${escapeHTML(p.name)}</td><td>${p.goals}</td><td>${p.assists}</td><td>${p.passes}</td><td>${p.tackles}</td><td>${p.appearances}</td></tr>`).join("");
+}
+function renderClubs(){
+ $("clubsList").innerHTML=CLUBS.map(c=>`<div class="player"><div class="avatar">⚽</div><div class="player-info"><strong>${escapeHTML(c)}</strong><small>${c===state.club?"Tu club":"Club FUTOF"}</small></div>${c===state.club?'<span class="tag green">Actual</span>':""}</div>`).join("");
+}
+function renderAwards(){
+ $("otherAwards").innerHTML=`
+ <div class="player"><div class="player-info"><strong>🥇 Bota de Oro</strong><small>Máximo goleador</small></div></div>
+ <div class="player"><div class="player-info"><strong>🧤 Guante de Oro</strong><small>Mejor portero</small></div></div>
+ <div class="player"><div class="player-info"><strong>🌟 Mejor joven</strong><small>Promesa de la temporada</small></div></div>`;
+}
+function renderMatch(){
+ const m=state.match;
+ if(!m){$("matchHomeName").textContent=state.club;$("matchAwayName").textContent=nextOpponent();$("score").textContent="0 - 0";$("matchMinute").textContent="00'";$("matchStatus").textContent="Preparado para jugar";$("matchLog").textContent="Todavía no comenzó el partido.";setActionButtons(false);return}
+ $("matchHomeName").textContent=state.club;$("matchAwayName").textContent=m.opponent;
+ $("score").textContent=m.home+" - "+m.away;
+ $("matchMinute").textContent=m.minute+"'";$("matchStatus").textContent=m.finished?"Encuentro finalizado":m.minute<45?"Primer tiempo":"Segundo tiempo";
+ $("energyValue").textContent=m.energy+"%";$("energyBar").style.width=m.energy+"%";
+ $("difficultyValue").textContent=({easy:"Fácil",normal:"Normal",hard:"Difícil",pro:"Profesional"})[state.difficulty];
+ $("matchCompetition").textContent=m.competition;
+ $("matchLog").innerHTML=m.log.map(x=>`<div>• ${escapeHTML(x)}</div>`).join("");
+ setActionButtons(!m.finished);
+}
+function setActionButtons(enabled){
+ document.querySelectorAll("[data-action]").forEach(b=>b.disabled=!enabled);
 }
 function render(){
- update();
- renderPlayers();
- renderMarket();
- renderTeams();
- renderPitch();
+ updateHeader();
+ const active=document.querySelector(".screen.active")?.id;
+ renderHome();renderCareer();renderSquad();renderMatch();
+ if(active==="contracts")renderContracts();
+ if(active==="loans")renderLoans();
+ if(active==="press")renderPress();
+ if(active==="youth")renderYouth();
+ if(active==="stats")renderStats();
+ if(active==="clubs")renderClubs();
+ if(active==="awards")renderAwards();
+ $("difficultySelect").value=state.difficulty;
 }
-render();
+
+function startMatch(){
+ if(state.match&&!state.match.finished){go("match");return}
+ const m={
+  opponent:nextOpponent(),home:0,away:0,minute:0,energy:100,
+  log:["¡El árbitro da comienzo al partido!"],
+  finished:false,competition:"LIGA · "+state.league,
+  actionLock:false,defending:false
+ };
+ state.match=m;save();go("match");renderMatch();
+}
+function logMatch(message){
+ state.match.log.unshift(state.match.minute+"' — "+message);
+ state.match.log=state.match.log.slice(0,30);
+}
+function actionProbability(action){
+ const m=state.match;
+ const base=DIFFICULTY[state.difficulty];
+ const tired=(100-m.energy)/300;
+ const quality=state.players.reduce((a,p)=>a+p.rating,0)/state.players.length/100;
+ let chance=base+quality*.15-tired;
+ if(action==="shoot")chance-=.09;
+ if(action==="dribble")chance-=.04;
+ if(action==="pass")chance+=.14;
+ return clamp(chance,.12,.91);
+}
+function matchAction(action){
+ const m=state.match;
+ if(!m||m.finished||m.actionLock)return;
+ m.actionLock=true;
+ setActionButtons(false);
+ // Un evento por pulsación: evita repetir acciones al mantener pulsado.
+ const advance=rand(1,3);
+ m.minute=Math.min(90,m.minute+advance);
+ m.energy=clamp(m.energy-rand(2,4),0,100);
+ const chance=actionProbability(action);
+ const success=Math.random()<chance;
+ const active=state.players.filter(p=>!p.loan&&p.injury===0);
+ const scorer=pick(active.filter(p=>p.pos==="DEL").length?active.filter(p=>p.pos==="DEL"):active);
+ if(scorer)scorer.appearances=Math.max(scorer.appearances,1);
+ if(action==="pass"){
+  if(success){logMatch("¡Buen pase! El equipo mantiene la posesión.");if(scorer)scorer.passes++}
+  else{logMatch("El rival intercepta el pase.");opponentChance()}
+ }
+ if(action==="dribble"){
+  if(success)logMatch("¡Regate completado! El equipo avanza.");
+  else{logMatch("El defensor rival gana el duelo.");opponentChance()}
+ }
+ if(action==="shoot"){
+  if(success&&Math.random()<(state.difficulty==="pro"?.20:.30)){
+   m.home++;if(scorer){scorer.goals++;scorer.shots++}
+   logMatch("¡¡¡GOOOOOOL!!! "+(scorer?.name||"Tu equipo")+" marca.");
+  }else{
+   if(scorer)scorer.shots++;
+   logMatch(success?"¡Disparo peligroso! El portero lo detiene.":"El disparo sale desviado.");
+   if(Math.random()<.22)opponentChance();
+  }
+ }
+ if(action==="defend"){
+  m.defending=true;
+  if(success){logMatch("¡Defensa impecable! Recuperás el balón.");if(scorer)scorer.tackles++}
+  else{logMatch("El rival supera la presión.");opponentChance()}
+ }
+ if(m.minute>=90){finishMatch();return}
+ renderMatch();save();
+ // Tiempo de espera real entre acciones. No hay repetición automática por mantener pulsado.
+ setTimeout(()=>{
+  if(state.match===m&&!m.finished){m.actionLock=false;setActionButtons(true)}
+ },1200);
+}
+function opponentChance(){
+ const m=state.match;
+ if(!m||m.finished)return;
+ const defense=state.players.filter(p=>p.pos==="DEF").reduce((a,p)=>a+p.rating,0)/4;
+ const block=defense/100+(m.energy/100)*.12;
+ if(Math.random()>block){
+  m.away++;logMatch("El rival aprovecha el espacio y marca.");
+ }else logMatch("¡La defensa evita el gol del rival!");
+}
+document.querySelectorAll("[data-action]").forEach(b=>{
+ b.addEventListener("click",()=>matchAction(b.dataset.action));
+});
+function finishMatch(){
+ const m=state.match;if(!m||m.finished)return;
+ m.finished=true;m.minute=90;
+ const home=m.home,away=m.away;
+ state.played++;state.round++;
+ state.goalsFor+=home;state.goalsAgainst+=away;
+ state.money+=home>away?3000:home===away?1000:500;
+ if(home>away){state.wins++;state.points+=3;addNews("¡Victoria frente a "+m.opponent+"!");}
+ else if(home===away){state.draws++;state.points++;addNews("Empate contra "+m.opponent+".");}
+ else{state.losses++;addNews("Derrota frente a "+m.opponent+".");}
+ state.players.forEach(p=>{
+  if(!p.loan&&p.injury===0){p.appearances++;p.energy=clamp(p.energy-rand(10,20),10,100)}
+  if(!p.injury&&Math.random()<.035){p.injury=rand(1,3);addNews(p.name+" sufrió una lesión.");}
+ });
+ // Recuperación de energía y avance de temporada contractual.
+ if(state.round%3===0){
+  state.players.forEach(p=>{if(p.injury>0)p.injury--;else p.energy=clamp(p.energy+20,0,100)});
+  state.players.forEach(p=>{if(p.contract>0)p.contract--});
+  state.loaned.forEach(p=>{p.rating=clamp(p.rating+rand(0,2),50,99)});
+  if(state.round>=18)endSeason();
+ }
+ logMatch("Final del partido. Resultado: "+home+" - "+away+".");
+ addNews("Partido finalizado: "+home+"-"+away+" contra "+m.opponent+".");
+ save();renderMatch();setActionButtons(false);
+ $("matchStatus").textContent="FINAL DEL PARTIDO";
+}
+function confirmFinish(){
+ if(!state.match||state.match.finished)return;
+ if(confirm("¿Querés abandonar el partido? Se registrará como derrota.")){
+  state.match.home=0;state.match.away=1;finishMatch();
+ }
+}
+function simulateRound(){
+ const teams=getLeague().teams.filter(t=>t!==state.club);
+ const opponent=pick(teams);
+ const my=state.points;
+ // Simulación simplificada de resultados de los otros clubes.
+ addNews("Se actualizaron los resultados de la jornada.");
+ save();renderCareer();
+ alert("Jornada simulada. Tu próximo rival es "+opponent+".");
+}
+function endSeason(){
+ const top=clubStats()[0];
+ if(top&&top.name===state.club){state.money+=15000;addNews("¡CAMPEÓN DE "+state.league+"! Premio: €15.000.");}
+ state.season++;state.round=0;
+ state.players.forEach(p=>{p.contract=Math.max(1,p.contract);p.energy=100;p.injury=0});
+ state.loaned.forEach(p=>{p.loan=false;state.players.push(p)});
+ state.loaned=[];
+ state.ballonWinner=null;
+ addNews("Comienza la temporada "+state.season+".");
+ save();
+}
+
+// ENTRENAMIENTO
+function train(type){
+ if(state.trainingRound===state.round){alert("Ya entrenaste en esta jornada.");return}
+ const available=state.players.filter(p=>!p.loan&&p.injury===0);
+ if(!available.length){alert("No hay jugadores disponibles para entrenar.");return}
+ const p=pick(available);
+ const field={technique:"passes",physical:"energy",shooting:"goals",defense:"tackles"}[type];
+ if(type==="physical"){p.energy=clamp(p.energy+10,0,100);p.rating=clamp(p.rating+1,50,99)}
+ else{p.rating=clamp(p.rating+1,50,99);p.training++}
+ p.energy=clamp(p.energy-8,0,100);
+ state.trainingRound=state.round;
+ addNews("Entrenamiento completado: "+p.name+" mejoró su rendimiento.");
+ save();render();alert(p.name+" completó el entrenamiento. Media: "+p.rating);
+}
+
+// CONTRATOS
+function renewContract(id){
+ const p=state.players.find(x=>x.id===id);if(!p)return;
+ const cost=p.rating*180;
+ if(state.money<cost){alert("No tenés suficiente presupuesto. Costo: €"+cost);return}
+ state.money-=cost;p.contract=3;
+ addNews("Contrato renovado: "+p.name+".");
+ save();renderContracts();
+}
+
+// CESIONES
+function loanPlayer(id){
+ const index=state.players.findIndex(p=>p.id===id);if(index<0)return;
+ const p=state.players[index];
+ p.loan=true;state.loaned.push(p);state.players.splice(index,1);
+ addNews(p.name+" fue cedido por una temporada.");
+ save();renderLoans();
+}
+function recallPlayer(id){
+ const i=state.loaned.findIndex(p=>p.id===id);if(i<0)return;
+ const p=state.loaned.splice(i,1)[0];p.loan=false;state.players.push(p);
+ save();renderLoans();
+}
+
+// PRENSA
+function answerPress(index){
+ const q=pressQuestions[pressIndex%pressQuestions.length],answer=q.a[index];
+ state.reputation=clamp(state.reputation+answer[1],0,100);
+ state.pressMood=state.reputation>65?"Positiva":state.reputation<35?"Tensa":"Neutral";
+ pressIndex++;
+ addNews("El entrenador habló con la prensa.");
+ save();renderPress();
+}
+
+// ACADEMIA JUVENIL
+function scoutYouth(){
+ if(state.money<2000){alert("Necesitás €2.000.");return}
+ state.money-=2000;
+ const first=["Iker","Adrián","Thiago","Dylan","Gael","Noah","Bruno","Álex","Leo","Enzo"];
+ const last=["Molina","Castro","Vega","Santos","Rivas","Navarro","Silva","Torres"];
+ const p={id:crypto.randomUUID(),name:pick(first)+" "+pick(last),pos:pick(["DEL","MED","DEF","POR"]),age:rand(15,18),rating:rand(55,70),potential:rand(78,94),energy:100,injury:0,contract:3,goals:0,assists:0,appearances:0,shots:0,passes:0,tackles:0,yellow:0,loan:false};
+ state.youth.push(p);addNews("La academia descubrió a "+p.name+".");
+ save();renderYouth();
+}
+function promoteYouth(id){
+ const i=state.youth.findIndex(p=>p.id===id);if(i<0)return;
+ const p=state.youth.splice(i,1)[0];
+ p.contract=3;state.players.push(p);
+ addNews(p.name+" se incorporó al primer equipo.");
+ save();renderYouth();
+}
+
+// PREMIOS
+function showBallon(){
+ const candidates=[...state.players].sort((a,b)=>(b.goals*4+b.assists*2+b.rating)-(a.goals*4+a.assists*2+a.rating));
+ const winner=candidates[0];
+ if(!winner){$("ballonResult").textContent="No hay candidatos.";return}
+ state.ballonWinner=winner.name;
+ $("ballonResult").innerHTML=`<div class="empty"><div style="font-size:42px">🏆</div><h2>Balón de Oro FUTOF</h2><h2 class="highlight">${escapeHTML(winner.name)}</h2><p>Media ${winner.rating} · ${winner.goals} goles · ${winner.assists} asistencias</p></div>`;
+ save();
+}
+
+// CLUB / DIFICULTAD / PARTIDA
+function setDifficulty(value){
+ state.difficulty=value;save();renderMatch();
+}
+function exportSave(){
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");
+ a.href=url;a.download="FUTOF-02-partida.json";a.click();URL.revokeObjectURL(url);
+}
+function resetGame(){
+ if(!confirm("¿Seguro que querés borrar tu carrera y comenzar de nuevo?"))return;
+ state=createState();save();go("home");
+}
+
+// INICIALIZACIÓN
+updateHeader();render();
 </script>
 </body>
 </html>
