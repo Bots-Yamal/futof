@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="theme-color" content="#07111c">
+<title>FUTOF — Football Experience</title>
+<style>
+:root{
+ --bg:#07111c;
+ --panel:#101e2b;
+ --panel2:#172838;
+ --green:#35dc88;
+ --text:#f3f7fa;
+ --muted:#8fa2b4;
+ --line:#253849;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ min-height:100vh;
+}
+button{font:inherit;cursor:pointer}
+.app{max-width:1200px;margin:auto;padding-bottom:90px}
+header{
+ height:68px;display:flex;align-items:center;justify-content:space-between;
+ padding:0 20px;border-bottom:1px solid var(--line);
+ background:#091521;position:sticky;top:0;z-index:10;
+}
+.logo{font-size:24px;font-weight:950;letter-spacing:-1px}
+.logo span{color:var(--green)}
+.profile{display:flex;align-items:center;gap:10px}
+.avatar{
+ width:37px;height:37px;border-radius:12px;background:var(--green);
+ color:#07111c;display:grid;place-items:center;font-weight:900
+}
+.money{font-weight:800;color:var(--green)}
+main{padding:20px}
+.screen{display:none;animation:appear .25s ease}
+.screen.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.eyebrow{color:var(--green);font-size:11px;font-weight:900;letter-spacing:2px}
+h1{font-size:clamp(29px,6vw,48px);margin:8px 0}
+h2{font-size:23px;margin:0 0 15px}
+h3{margin:0 0 7px;font-size:16px}
+p{color:var(--muted);line-height:1.6}
+.hero{
+ min-height:280px;border-radius:23px;padding:28px;
+ display:flex;flex-direction:column;justify-content:flex-end;
+ background:linear-gradient(90deg,rgba(4,13,22,.96),rgba(4,13,22,.3)),
+ linear-gradient(0deg,rgba(4,13,22,.7),transparent),
+ url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1200") center/cover;
+ overflow:hidden;
+}
+.hero p{max-width:400px;color:#d3dce5}
+.btn{
+ border:0;border-radius:12px;padding:13px 18px;font-weight:850;
+ background:var(--green);color:#07111c;
+}
+.btn.secondary{background:var(--panel2);color:white;border:1px solid var(--line)}
+.btn.dark{background:#26394a;color:white}
+.btn:active{transform:scale(.97)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.section{margin-top:28px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.card{
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:17px;padding:17px;min-width:0;
+}
+.card p{font-size:13px;margin:6px 0}
+.big-number{font-size:27px;font-weight:900}
+.muted{color:var(--muted)}
+.tag{
+ display:inline-block;background:#173b30;color:var(--green);
+ border-radius:7px;padding:5px 9px;font-size:11px;font-weight:800
+}
+.club-card{display:flex;align-items:center;gap:13px}
+.crest{
+ width:48px;height:48px;border-radius:14px;
+ background:var(--panel2);display:grid;place-items:center;
+ font-size:26px;flex-shrink:0
+}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.list{display:grid;gap:10px}
+.player{
+ display:flex;align-items:center;gap:12px;
+ background:var(--panel);padding:12px;border-radius:13px;
+ border:1px solid var(--line)
+}
+.player .rating{font-size:20px;font-weight:900;color:var(--green);width:35px}
+.player-info{flex:1;min-width:0}
+.player-info strong{display:block}
+.player-info small{color:var(--muted)}
+.bottom-nav{
+ position:fixed;bottom:0;left:0;right:0;z-index:20;
+ background:#0b1825;border-top:1px solid var(--line);
+ display:flex;justify-content:center;
+ padding:9px 4px calc(9px + env(safe-area-inset-bottom));
+}
+.nav-inner{display:flex;width:100%;max-width:650px;justify-content:space-around}
+.nav-btn{
+ color:var(--muted);background:none;border:0;
+ display:flex;flex-direction:column;align-items:center;
+ gap:4px;font-size:10px;min-width:55px;padding:4px
+}
+.nav-btn span{font-size:21px}
+.nav-btn.active{color:var(--green)}
+select{
+ background:var(--panel2);color:white;border:1px solid var(--line);
+ border-radius:10px;padding:11px;width:100%;margin:7px 0 14px
+}
+input{
+ background:var(--panel2);color:white;border:1px solid var(--line);
+ padding:12px;border-radius:10px;width:100%
+}
+.pitch{
+ position:relative;width:100%;aspect-ratio:1.45;
+ background:repeating-linear-gradient(90deg,#17643e 0 10%,#1b7047 10% 20%);
+ border:3px solid #d5e8d8;border-radius:7px;overflow:hidden;
+}
+.pitch:before{
+ content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px solid #d5e8d8
+}
+.pitch:after{
+ content:"";position:absolute;width:23%;aspect-ratio:1;border:2px solid #d5e8d8;
+ border-radius:50%;left:38.5%;top:50%;transform:translateY(-50%)
+}
+.player-dot{
+ position:absolute;width:30px;height:30px;border-radius:50%;
+ background:#eaf5ee;color:#092018;border:2px solid #092018;
+ display:grid;place-items:center;font-size:10px;font-weight:900;
+ transform:translate(-50%,-50%);z-index:2
+}
+.player-dot.enemy{background:#e34d54;color:white}
+.match-score{
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:17px;padding:18px;text-align:center;margin-bottom:15px
+}
+.score{font-size:38px;font-weight:950;letter-spacing:4px}
+.match-log{height:110px;overflow:auto;color:var(--muted);font-size:12px;line-height:1.8}
+.shop-price{color:var(--green);font-weight:900}
+.notice{
+ padding:13px;background:#142a26;border:1px solid #23523e;
+ color:#b5f4d0;border-radius:12px;font-size:13px;margin-top:12px
+}
+@media(min-width:750px){
+ main{padding:30px}
+ .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .hero{min-height:350px;padding:40px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="logo">FUT<span>OF</span></div>
+ <div class="profile">
+  <div class="money" id="headerMoney">€ 25.000</div>
+  <div class="avatar">F</div>
+ </div>
+</header>
+
+<main>
+<!-- INICIO -->
+<section id="home" class="screen active">
+ <div class="hero">
+  <div class="eyebrow">YOUR FOOTBALL. YOUR LEGACY.</div>
+  <h1>EL FÚTBOL<br>ESTÁ EN TUS MANOS.</h1>
+  <p>Construye tu equipo, toma decisiones y escribe tu propia historia.</p>
+  <div class="actions">
+   <button class="btn" onclick="startMatch()">▶ JUGAR PARTIDO</button>
+   <button class="btn secondary" onclick="show('career')">MODO CARRERA</button>
+  </div>
+ </div>
+
+ <div class="section">
+  <div class="row"><h2>Tu temporada</h2><span class="tag">TEMPORADA 1</span></div>
+  <div class="grid">
+   <div class="card"><div class="muted">Club</div><div class="big-number">⚽</div><strong id="homeClub">FUTOF FC</strong></div>
+   <div class="card"><div class="muted">Victorias</div><div class="big-number" id="wins">0</div><small class="muted">Partidos ganados</small></div>
+   <div class="card"><div class="muted">Presupuesto</div><div class="big-number" id="homeMoney">25K</div><small class="muted">Euros disponibles</small></div>
+   <div class="card"><div class="muted">Jugadores</div><div class="big-number" id="playerCount">5</div><small class="muted">En plantilla</small></div>
+  </div>
+ </div>
+
+ <div class="section">
+  <h2>Accesos rápidos</h2>
+  <div class="grid">
+   <button class="card" onclick="show('squad')" style="color:white;text-align:left">👥<h3>Plantilla</h3><p>Gestiona tus jugadores</p></button>
+   <button class="card" onclick="show('tactics')" style="color:white;text-align:left">📋<h3>Tácticas</h3><p>Prepara tu formación</p></button>
+   <button class="card" onclick="show('market')" style="color:white;text-align:left">💰<h3>Fichajes</h3><p>Refuerza el equipo</p></button>
+   <button class="card" onclick="show('teams')" style="color:white;text-align:left">🏆<h3>Clubes</h3><p>Conoce otros equipos</p></button>
+  </div>
+ </div>
+</section>
+
+<!-- CARRERA -->
+<section id="career" class="screen">
+ <div class="eyebrow">CAREER MODE</div>
+ <h1>Modo carrera</h1>
+ <p>Tu camino hacia la gloria comienza aquí.</p>
+ <div class="card">
+  <div class="eyebrow">TU CLUB</div>
+  <h2 id="careerClub">FUTOF FC</h2>
+  <p>Temporada 2026/27 · Liga de prueba</p>
+  <div class="grid">
+   <div><div class="muted">Victorias</div><div class="big-number" id="careerWins">0</div></div>
+   <div><div class="muted">Jugados</div><div class="big-number" id="played">0</div></div>
+   <div><div class="muted">Presupuesto</div><div class="big-number" id="careerMoney">25K</div></div>
+   <div><div class="muted">Reputación</div><div class="big-number">⭐ 1</div></div>
+  </div>
+ </div>
+ <div class="section">
+  <h2>Próximo encuentro</h2>
+  <div class="card row">
+   <div style="text-align:center;flex:1"><div class="crest" style="margin:auto">⚽</div><strong>FUTOF FC</strong></div>
+   <div><strong>VS</strong><p>Jornada 1</p></div>
+   <div style="text-align:center;flex:1"><div class="crest" style="margin:auto">🔵</div><strong>Blue City</strong></div>
+  </div>
+  <button class="btn" style="width:100%;margin-top:13px" onclick="startMatch()">JUGAR ENCUENTRO</button>
+ </div>
+ <div class="section">
+  <h2>Objetivos del entrenador</h2>
+  <div class="card">
+   <p>🎯 Gana tu primer partido.</p>
+   <p>🎯 Consigue un nuevo fichaje.</p>
+   <p>🎯 Construye una plantilla competitiva.</p>
+  </div>
+ </div>
+</section>
+
+<!-- PLANTILLA -->
+<section id="squad" class="screen">
+ <div class="eyebrow">TEAM MANAGEMENT</div>
+ <h1>Mi plantilla</h1>
+ <p>Conoce y administra a tus futbolistas.</p>
+ <div class="row"><h2>Jugadores</h2><span class="tag" id="squadCount">5 jugadores</span></div>
+ <div class="list" id="playersList"></div>
+</section>
+
+<!-- TACTICAS -->
+<section id="tactics" class="screen">
+ <div class="eyebrow">TACTICAL BOARD</div>
+ <h1>Tácticas</h1>
+ <p>Elige cómo jugará tu equipo.</p>
+ <div class="card">
+  <label>Formación</label>
+  <select id="formation" onchange="setFormation(this.value)">
+   <option>4-3-3</option><option>4-4-2</option><option>4-2-3-1</option>
+   <option>3-5-2</option><option>5-3-2</option>
+  </select>
+  <label>Estilo de juego</label>
+  <select id="style">
+   <option>Equilibrado</option><option>Posesión</option>
+   <option>Presión alta</option><option>Contraataque</option>
+  </select>
+  <label>Actitud</label>
+  <select id="mentality">
+   <option>Normal</option><option>Ofensiva</option><option>Defensiva</option>
+  </select>
+  <div class="notice">Las tácticas se guardan automáticamente en esta sesión.</div>
+ </div>
+ <div class="section">
+  <h2>Formación visual</h2>
+  <div class="pitch" id="tacticalPitch"></div>
+ </div>
+</section>
+
+<!-- MERCADO -->
+<section id="market" class="screen">
+ <div class="eyebrow">TRANSFER MARKET</div>
+ <h1>Mercado de fichajes</h1>
+ <p>Encuentra nuevos talentos para tu club.</p>
+ <div class="card row">
+  <div><small class="muted">PRESUPUESTO DISPONIBLE</small><h2 id="marketMoney">€ 25.000</h2></div>
+  <span>💰</span>
+ </div>
+ <div class="section"><h2>Jugadores disponibles</h2><div class="list" id="marketList"></div></div>
+ <div class="notice">Mercado de demostración: jugadores ficticios y monedas virtuales.</div>
+</section>
+
+<!-- EQUIPOS -->
+<section id="teams" class="screen">
+ <div class="eyebrow">CLUB DIRECTORY</div>
+ <h1>Clubes</h1>
+ <p>Explora equipos de fútbol.</p>
+ <div class="list" id="teamsList"></div>
+ <div class="notice">Los clubes mostrados son ejemplos. No incluye licencias oficiales.</div>
+</section>
+
+<!-- PARTIDO -->
+<section id="match" class="screen">
+ <div class="eyebrow">MATCH DAY</div>
+ <h1>El partido</h1>
+ <div class="match-score">
+  <div class="muted" id="matchMinute">MINUTO 0</div>
+  <div class="row" style="justify-content:center;margin:12px 0">
+   <strong>FUTOF FC</strong><span style="margin:0 15px">⚽</span><strong>BLUE CITY</strong>
+  </div>
+  <div class="score"><span id="scoreHome">0</span> - <span id="scoreAway">0</span></div>
+  <div class="muted" id="matchStatus">PARTIDO PREPARADO</div>
+ </div>
+ <div class="pitch" id="matchPitch">
+  <div class="player-dot" style="left:16%;top:50%">POR</div>
+  <div class="player-dot" style="left:32%;top:25%">DEF</div>
+  <div class="player-dot" style="left:32%;top:75%">DEF</div>
+  <div class="player-dot" style="left:48%;top:40%">MED</div>
+  <div class="player-dot" style="left:48%;top:60%">MED</div>
+  <div class="player-dot" style="left:70%;top:50%">DEL</div>
+  <div class="player-dot enemy" style="left:83%;top:50%">POR</div>
+  <div class="player-dot enemy" style="left:68%;top:25%">DEF</div>
+  <div class="player-dot enemy" style="left:68%;top:75%">DEF</div>
+  <div class="player-dot enemy" style="left:52%;top:35%">MED</div>
+  <div class="player-dot enemy" style="left:52%;top:65%">MED</div>
+  <div class="player-dot enemy" style="left:32%;top:50%">DEL</div>
+ </div>
+ <div class="section card">
+  <div class="row"><h3>Acciones del partido</h3><span class="tag">EN JUEGO</span></div>
+  <p>Selecciona tu siguiente movimiento.</p>
+  <div class="grid">
+   <button class="btn" onclick="playAction('Pase')">⚽ Pase</button>
+   <button class="btn" onclick="playAction('Disparo')">🥅 Disparar</button>
+   <button class="btn secondary" onclick="playAction('Regate')">🏃 Regate</button>
+   <button class="btn secondary" onclick="playAction('Defender')">🛡️ Defender</button>
+  </div>
+  <div class="section">
+   <h3>Relato del partido</h3>
+   <div class="match-log" id="matchLog">El árbitro está preparado. ¡Que comience el encuentro!</div>
+  </div>
+  <button class="btn secondary" style="width:100%;margin-top:15px" onclick="finishMatch()">Finalizar partido</button>
+ </div>
+</section>
+
+<!-- AJUSTES -->
+<section id="settings" class="screen">
+ <div class="eyebrow">SETTINGS</div>
+ <h1>Ajustes</h1>
+ <div class="card">
+  <h3>Nombre de tu club</h3>
+  <input id="clubName" maxlength="22" value="FUTOF FC">
+  <button class="btn" style="margin-top:12px;width:100%" onclick="saveClub()">Guardar nombre</button>
+ </div>
+ <div class="section card">
+  <h3>Información</h3>
+  <p>FUTOF 0.1</p>
+  <p>Versión de desarrollo.</p>
+  <p>Juego de fútbol experimental.</p>
+ </div>
+ <div class="section card">
+  <h3>Datos de juego</h3>
+  <button class="btn secondary" style="width:100%" onclick="resetGame()">Reiniciar progreso</button>
+ </div>
+</section>
+</main>
+
+<nav class="bottom-nav">
+ <div class="nav-inner">
+  <button class="nav-btn active" onclick="show('home',this)"><span>⌂</span>Inicio</button>
+  <button class="nav-btn" onclick="show('career',this)"><span>🏆</span>Carrera</button>
+  <button class="nav-btn" onclick="show('squad',this)"><span>👥</span>Plantilla</button>
+  <button class="nav-btn" onclick="show('market',this)"><span>💰</span>Mercado</button>
+  <button class="nav-btn" onclick="show('settings',this)"><span>⚙️</span>Ajustes</button>
+ </div>
+</nav>
+</div>
+
+<script>
+const initialPlayers=[
+ {name:"Alex Morgan",pos:"POR",rating:76,value:0},
+ {name:"Leo Silva",pos:"DEF",rating:75,value:0},
+ {name:"Marco Díaz",pos:"MED",rating:78,value:0},
+ {name:"Daniel Costa",pos:"DEL",rating:80,value:0},
+ {name:"Lucas Vega",pos:"MED",rating:74,value:0}
+];
+const available=[
+ {name:"Noah Williams",pos:"DEL",rating:82,price:12000},
+ {name:"Mateo Rossi",pos:"MED",rating:79,price:9000},
+ {name:"Ethan Brown",pos:"DEF",rating:77,price:7000},
+ {name:"Gabriel Santos",pos:"POR",rating:81,price:11000},
+ {name:"Hugo Martín",pos:"DEL",rating:85,price:18000},
+ {name:"Oliver Smith",pos:"MED",rating:76,price:6500}
+];
+let state={
+ money:25000,wins:0,played:0,club:"FUTOF FC",
+ players:initialPlayers.map(p=>({...p})),
+ formation:"4-3-3",scoreH:0,scoreA:0,minute:0,activeMatch:false,
+ matchFinished:false
+};
+let opponent="Blue City";
+
+function show(id,btn){
+ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ else document.querySelectorAll(".nav-btn").forEach(b=>{
+  if(b.getAttribute("onclick")?.includes("'"+id+"'"))b.classList.add("active");
+ });
+ window.scrollTo(0,0);
+ render();
+}
+function money(n){return "€ "+n.toLocaleString("es-ES")}
+function shortMoney(n){return (n/1000).toFixed(1).replace(".0","")+"K"}
+function update(){
+ document.getElementById("headerMoney").textContent=money(state.money);
+ document.getElementById("homeMoney").textContent=shortMoney(state.money);
+ document.getElementById("careerMoney").textContent=shortMoney(state.money);
+ document.getElementById("marketMoney").textContent=money(state.money);
+ document.getElementById("wins").textContent=state.wins;
+ document.getElementById("careerWins").textContent=state.wins;
+ document.getElementById("played").textContent=state.played;
+ document.getElementById("playerCount").textContent=state.players.length;
+ document.getElementById("squadCount").textContent=state.players.length+" jugadores";
+ document.getElementById("homeClub").textContent=state.club;
+ document.getElementById("careerClub").textContent=state.club;
+ document.getElementById("clubName").value=state.club;
+}
+function renderPlayers(){
+ document.getElementById("playersList").innerHTML=state.players.map(p=>`
+ <div class="player">
+  <div class="rating">${p.rating}</div>
+  <div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>${p.pos} · FUTOF FC</small></div>
+  <span class="tag">ACTIVO</span>
+ </div>`).join("");
+}
+function renderMarket(){
+ document.getElementById("marketList").innerHTML=available.map((p,i)=>`
+ <div class="player">
+  <div class="rating">${p.rating}</div>
+  <div class="player-info"><strong>${escapeHTML(p.name)}</strong><small>${p.pos} · ${money(p.price)}</small></div>
+  <button class="btn" onclick="buyPlayer(${i})">Fichar</button>
+ </div>`).join("");
+}
+function renderTeams(){
+ let clubs=[["🔵","Blue City","Inglaterra"],["🔴","Red Madrid","España"],["⚫","Black Turin","Italia"],["🟡","Golden Paris","Francia"],["🟢","Green Munich","Alemania"]];
+ document.getElementById("teamsList").innerHTML=clubs.map(c=>`
+ <div class="card club-card"><div class="crest">${c[0]}</div><div><strong>${c[1]}</strong><p>${c[2]} · Club de demostración</p></div></div>`).join("");
+}
+function renderPitch(){
+ let positions={
+ "4-3-3":[[15,50],[32,18],[32,39],[32,61],[32,82],[52,25],[52,50],[52,75],[76,20],[76,50],[76,80]],
+ "4-4-2":[[15,50],[32,18],[32,39],[32,61],[32,82],[53,15],[53,38],[53,62],[53,85],[76,38],[76,62]],
+ "4-2-3-1":[[15,50],[32,18],[32,39],[32,61],[32,82],[48,35],[48,65],[68,20],[68,50],[68,80],[84,50]],
+ "3-5-2":[[15,50],[32,25],[32,50],[32,75],[53,12],[53,31],[53,50],[53,69],[53,88],[78,35],[78,65]],
+ "5-3-2":[[15,50],[30,12],[30,31],[30,50],[30,69],[30,88],[53,25],[53,50],[53,75],[78,35],[78,65]]
+ };
+ document.getElementById("tacticalPitch").innerHTML=positions[state.formation].map((p,i)=>
+ `<div class="player-dot" style="left:${p[0]}%;top:${p[1]}%">${i===0?"POR":i<5?"DEF":i<9?"MED":"DEL"}</div>`
+ ).join("");
+}
+function setFormation(v){state.formation=v;renderPitch()}
+function buyPlayer(i){
+ let p=available[i];
+ if(state.players.some(x=>x.name===p.name)){alert("Ya tienes a este jugador.");return}
+ if(state.money<p.price){alert("No tienes suficiente presupuesto.");return}
+ state.money-=p.price;
+ state.players.push({...p});
+ available.splice(i,1);
+ render();alert("¡Fichaje completado: "+p.name+"!");
+}
+function startMatch(){
+ state.scoreH=0;state.scoreA=0;state.minute=0;
+ state.activeMatch=true;state.matchFinished=false;
+ document.getElementById("scoreHome").textContent=0;
+ document.getElementById("scoreAway").textContent=0;
+ document.getElementById("matchMinute").textContent="MINUTO 0";
+ document.getElementById("matchStatus").textContent="EN JUEGO";
+ document.getElementById("matchLog").innerHTML="¡Comienza el partido! FUTOF FC mueve el balón.";
+ show("match");
+}
+function log(text){
+ let el=document.getElementById("matchLog");
+ el.innerHTML+=`<br>Min ${state.minute}: ${text}`;
+ el.scrollTop=el.scrollHeight;
+}
+function playAction(action){
+ if(!state.activeMatch||state.matchFinished){alert("No hay partido activo.");return}
+ state.minute=Math.min(90,state.minute+Math.floor(Math.random()*9)+3);
+ let roll=Math.random();
+ if(action==="Disparo"){
+  if(roll>.57){state.scoreH++;log("¡GOOOOOOL de FUTOF FC!");}
+  else log("El disparo no encuentra portería.");
+ }else if(action==="Pase"){
+  log(roll>.2?"Buen pase. Tu equipo conserva la posesión.":"Pase interceptado por el rival.");
+ }else if(action==="Regate"){
+  log(roll>.4?"¡Regate exitoso! Avanzas hacia el área.":"El defensor consigue quitarte el balón.");
+ }else{
+  if(roll>.3){log("Buena defensa. Recuperas la posesión.");}
+  else{state.scoreA++;log("El rival aprovecha el espacio y marca.");}
+ }
+ if(state.minute>=90){
+  finishMatch();return;
+ }
+ document.getElementById("scoreHome").textContent=state.scoreH;
+ document.getElementById("scoreAway").textContent=state.scoreA;
+ document.getElementById("matchMinute").textContent="MINUTO "+state.minute;
+}
+function finishMatch(){
+ if(!state.activeMatch||state.matchFinished)return;
+ state.matchFinished=true;state.activeMatch=false;
+ state.played++;
+ if(state.scoreH>state.scoreA){state.wins++;state.money+=3000}
+ else if(state.scoreH===state.scoreA){state.money+=1000}
+ else{state.money+=500}
+ document.getElementById("matchStatus").textContent="PARTIDO FINALIZADO";
+ log("Final del partido. Resultado: "+state.scoreH+" - "+state.scoreA);
+ update();
+ alert("Partido terminado: "+state.scoreH+" - "+state.scoreA+". Premio añadido al presupuesto.");
+}
+function saveClub(){
+ let v=document.getElementById("clubName").value.trim();
+ if(!v){alert("Escribe un nombre.");return}
+ state.club=v;update();alert("Nombre del club actualizado.");
+}
+function escapeHTML(str){
+ return String(str).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function resetGame(){
+ if(!confirm("¿Seguro que quieres reiniciar todo tu progreso?"))return;
+ state={money:25000,wins:0,played:0,club:"FUTOF FC",
+ players:initialPlayers.map(p=>({...p})),formation:"4-3-3",
+ scoreH:0,scoreA:0,minute:0,activeMatch:false,matchFinished:false};
+ location.reload();
+}
+function render(){
+ update();
+ renderPlayers();
+ renderMarket();
+ renderTeams();
+ renderPitch();
+}
+render();
+</script>
+</body>
+</html>
